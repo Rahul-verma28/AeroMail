@@ -254,6 +254,22 @@ export default function SettingsTab({ onSave, onResetQuota }: SettingsTabProps) 
               </div>
             </div>
 
+            {/* Contextual Gmail App Passwords instructions help box */}
+            <div className="rounded-xl border border-indigo-500/10 bg-indigo-500/5 p-4 text-xs text-muted-foreground space-y-2 border-indigo-500/20 animate-fade-in">
+              <span className="font-bold text-foreground block text-xs flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
+                🔑 Quick Guide: Gmail SMTP App Passwords Setup
+              </span>
+              <ol className="list-decimal pl-4 space-y-1 bg-transparent">
+                <li>Log in to your <strong>Google Account</strong>.</li>
+                <li>Go to the <strong>Security</strong> tab in the left-hand menu.</li>
+                <li>Ensure <strong>2-Step Verification</strong> is turned on.</li>
+                <li>Search or scroll down to the <strong>App passwords</strong> section.</li>
+                <li>Create a custom name (e.g., "Nodemailer") and click <strong>Generate</strong>.</li>
+                <li>Google will provide a 16-character passcode. Copy this and paste it as your <strong>SMTP Password</strong> above!</li>
+              </ol>
+            </div>
+
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 border-t border-border/40 pt-4">
               <div className="space-y-1">
                 <div className="flex justify-between items-center">
@@ -300,6 +316,21 @@ export default function SettingsTab({ onSave, onResetQuota }: SettingsTabProps) 
                 onChange={(e) => handleResendChange("apiKey", e.target.value)}
                 className="w-full rounded-xl border border-border/70 bg-background/50 px-4 py-2.5 text-sm text-foreground focus:border-indigo-500 focus:outline-none transition"
               />
+            </div>
+
+            {/* Contextual Resend API instructions help box */}
+            <div className="rounded-xl border border-purple-500/10 bg-purple-500/5 p-4 text-xs text-muted-foreground space-y-2 border-purple-500/20 animate-fade-in">
+              <span className="font-bold text-foreground block text-xs flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-purple-500 animate-pulse" />
+                🚀 Quick Guide: Setting up Resend API Key
+              </span>
+              <ol className="list-decimal pl-4 space-y-1 bg-transparent">
+                <li>Log in to your <strong>Resend Dashboard</strong> (<a href="https://resend.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">resend.com</a>).</li>
+                <li>Go to the <strong>API Keys</strong> tab in the left-hand sidebar menu.</li>
+                <li>Click on the <strong>Create API Key</strong> button.</li>
+                <li>Create a custom name (e.g., "Aeromail") and assign appropriate sending permissions.</li>
+                <li>Copy the generated API Key passcode (starts with <code>re_</code>) and paste it as your <strong>Resend API Key</strong> above!</li>
+              </ol>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

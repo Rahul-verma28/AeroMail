@@ -39,8 +39,8 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, onClose }: Si
         {/* Brand Header */}
         <div className="flex h-16 items-center justify-between gap-2 px-6 border-b border-border/60">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 shadow-md">
-              <Mail className="h-5 w-5 text-white" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg overflow-hidden border border-border/50 bg-muted/40 shadow-md">
+              <img src="/logo.png" alt="Aeromail Logo" className="h-full w-full object-cover" />
             </div>
             <div className="flex flex-col">
               <span className="font-sans font-bold tracking-wide text-foreground">

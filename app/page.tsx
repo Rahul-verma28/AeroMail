@@ -319,9 +319,11 @@ export default function Page() {
         {/* ACTIVE PANEL TABS CONTENT */}
         <div className="flex-1 px-4 sm:px-6 lg:px-8 py-6 max-w-7xl w-full mx-auto">
           {!mounted ? (
-            <div className="flex flex-col items-center justify-center h-[50vh] gap-3">
-              <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
-              <p className="text-xs font-semibold text-muted-foreground">Initializing secure environment...</p>
+            <div className="flex flex-col items-center justify-center h-[50vh] gap-4">
+              <div className="h-16 w-16 rounded-2xl overflow-hidden border border-border bg-muted/40 shadow-xl p-0.5 animate-bounce-slow">
+                <img src="/logo.png" alt="Aeromail Logo" className="h-full w-full object-cover" />
+              </div>
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest animate-pulse">Initializing secure environment...</p>
             </div>
           ) : (
             <>
