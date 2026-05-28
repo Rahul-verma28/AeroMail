@@ -61,10 +61,21 @@ export default function QueueMonitor({
 }: QueueMonitorProps) {
   const [isPaused, setIsPaused] = useState(false)
   const [isStopped, setIsStopped] = useState(false)
-  const [logs, setLogs] = useState<LogEntry[]>([])
+  const [logs, setLogsState] = useState<LogEntry[]>([])
+  const logsRef = useRef<LogEntry[]>([])
   const [campaignEnded, setCampaignEnded] = useState(false)
 
+  // Wrapper to keep logsRef always in sync with latest state
+  const setLogs = (updateFn: LogEntry[] | ((prev: LogEntry[]) => LogEntry[])) => {
+    setLogsState((prev) => {
+      const next = typeof updateFn === "function" ? updateFn(prev) : updateFn
+      logsRef.current = next
+      return next
+    })
+  }
+
   const activeWorkerRef = useRef<boolean>(false)
+  const campaignStartedRef = useRef<boolean>(false)
   const isPausedRef = useRef<boolean>(false)
   const isStoppedRef = useRef<boolean>(false)
   const logsContainerRef = useRef<HTMLDivElement>(null)
@@ -101,7 +112,8 @@ export default function QueueMonitor({
 
   // Trigger main queue processor on mount
   useEffect(() => {
-    if (activeWorkerRef.current) return // Avoid double runs
+    if (campaignStartedRef.current) return // Avoid restarts on dependency updates
+    campaignStartedRef.current = true
     activeWorkerRef.current = true
 
     const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -232,17 +244,15 @@ export default function QueueMonitor({
 
       setCampaignEnded(true)
       activeWorkerRef.current = false
+
+      // Trigger history save and quota update exactly once on loop exit
+      if (onCampaignComplete) {
+        onCampaignComplete(logsRef.current)
+      }
     }
 
     processQueue()
-  }, [contacts, subjectTemplate, bodyTemplate, attachments, delaySeconds, method, smtpConfig, resendConfig])
-
-  // Save to history when the campaign completes
-  useEffect(() => {
-    if (campaignEnded && onCampaignComplete && logs.length > 0) {
-      onCampaignComplete(logs)
-    }
-  }, [campaignEnded, onCampaignComplete, logs])
+  }, [contacts, subjectTemplate, bodyTemplate, attachments, delaySeconds, method, smtpConfig, resendConfig, onCampaignComplete])
 
   // Count summaries
   const successCount = logs.filter((l) => l.status === "success").length
@@ -290,6 +300,7 @@ export default function QueueMonitor({
     
     // Rerun triggered because of changes in logs / dependencies
     activeWorkerRef.current = false
+    campaignStartedRef.current = false
   }
 
   return (

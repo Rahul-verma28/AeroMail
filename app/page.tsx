@@ -364,7 +364,16 @@ export default function Page() {
 
               {activeTab === "history" && <HistoryTab />}
 
-              {activeTab === "settings" && <SettingsTab onSave={handleSettingsSave} />}
+              {activeTab === "settings" && (
+                <SettingsTab
+                  onSave={handleSettingsSave}
+                  onResetQuota={() => {
+                    setSentCount(0)
+                    const todayStr = new Date().toISOString().split("T")[0]
+                    localStorage.setItem("aeromail_sent_tracker", JSON.stringify({ date: todayStr, count: 0 }))
+                  }}
+                />
+              )}
             </>
           )}
         </div>

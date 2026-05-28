@@ -21,9 +21,10 @@ export interface ResendConfig {
 
 interface SettingsTabProps {
   onSave: (method: "smtp" | "resend", smtp: SMTPConfig, resend: ResendConfig) => void
+  onResetQuota?: () => void
 }
 
-export default function SettingsTab({ onSave }: SettingsTabProps) {
+export default function SettingsTab({ onSave, onResetQuota }: SettingsTabProps) {
   // Lazy state initializers to prevent React 19 set-state-in-effect warnings
   const [method, setMethod] = useState<"smtp" | "resend">(() => {
     if (typeof window !== "undefined") {
@@ -351,6 +352,19 @@ export default function SettingsTab({ onSave }: SettingsTabProps) {
           </div>
 
           <div className="flex items-center gap-3">
+            {onResetQuota && (
+              <button
+                onClick={() => {
+                  if (confirm("Are you sure you want to reset your today's sent transmissions counter back to 0?")) {
+                    onResetQuota()
+                  }
+                }}
+                className="flex items-center gap-1.5 rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-2.5 text-xs font-bold text-destructive hover:bg-destructive/15 transition cursor-pointer"
+              >
+                Reset Daily Counter
+              </button>
+            )}
+
             <button
               onClick={handleTestConnection}
               disabled={testing}
